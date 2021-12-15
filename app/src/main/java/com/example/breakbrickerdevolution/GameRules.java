@@ -1,6 +1,8 @@
 package com.example.breakbrickerdevolution;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -44,6 +46,10 @@ public class GameRules {
         numBricks = 0;
         //Check the lives and reset
         if(lives == 0){
+            Context context;
+            //context.getApplicationContext();
+            //SharedPreferences hScore = getSharedPreferences("YOUR_PREF_NAME", 0);
+            //int highScore = hScore.getInt("SNOW_DENSITY", 0);
             lives = 5;
             score = 0;
         }
