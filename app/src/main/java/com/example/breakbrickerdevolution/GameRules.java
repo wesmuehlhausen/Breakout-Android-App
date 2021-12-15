@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
 import android.view.SurfaceHolder;
-import android.graphics.drawable.Drawable;
 
 public class GameRules {
 
@@ -16,9 +15,9 @@ public class GameRules {
     private static int screenHeightY;
 
     //GAME OBJECTS
-    private Paddle paddle;
+    private Platform platform;
     private Ball ball;
-    private Brick[] bricks = new Brick[150];//MAX BRICKS 150
+    private Tile[] tiles = new Tile[150];//MAX tiles 150
 
     //GENERAL PRIVATE MEMBER VARIABLES
     private Canvas canvas;
@@ -29,10 +28,10 @@ public class GameRules {
     private boolean paused = true;//Is game paused
     private long frameRate;
     private long frameTime;
-    private int numBricks = 0;
+    private int numTiles = 0;
     private int lives = 5;
-    private int brickColumns = 8;
-    private int brickRows = 3;
+    private int tileColumns = 8;
+    private int tileRows = 9;
     private int score = 0;
 
     ////////////////////////////////////////////////////////////////
@@ -41,27 +40,27 @@ public class GameRules {
     //RESET GAME
     public void resetGame(){
         ball.reset(screenWidthX, screenHeightY);
-        numBricks = 0;
+        numTiles = 0;
         //Check the lives and reset
         if(lives == 0){
             lives = 5;
             score = 0;
         }
-        //Loop through and set up bricks
-        for (int column = 0; column < brickColumns; column++) {
-            for (int row = 0; row < brickRows; row++) {
-                bricks[numBricks] = new Brick(row, column, (screenWidthX/8), (screenHeightY/10));
-                numBricks++;
+        //Loop through and set up tiles
+        for (int column = 0; column < tileColumns; column++) {
+            for (int row = 0; row < tileRows; row++) {
+                tiles[numTiles] = new Tile(row, column, (screenWidthX/8), (screenHeightY/30));
+                numTiles++;
             }
         }
     }
 
-    //BALL-BRICK COLLISION
-    public void collisionBallBrick(){
-        for (int i = 0; i < numBricks; i++) {
-            if (bricks[i].getVisibility()) {
-                if (RectF.intersects(bricks[i].getRect(), ball.getRect())) {
-                    bricks[i].setInvisible();
+    //BALL-TILE COLLISION
+    public void collisionBallTile(){
+        for (int i = 0; i < numTiles; i++) {
+            if (tiles[i].getVisibility()) {
+                if (RectF.intersects(tiles[i].getRect(), ball.getRect())) {
+                    tiles[i].setInvisible();
                     ball.reverseYVelocity();
                     score = score + 10;
                 }
@@ -69,12 +68,14 @@ public class GameRules {
         }
     }
 
-    // BALL-PADDLE COLLISION
-    public void collisionBallPaddle(){
-        if (RectF.intersects(paddle.getRect(), ball.getRect())) {
-            ball.setRandomXVelocity();
-            ball.reverseYVelocity();
-            ball.clearObstacleY(paddle.getRect().top - 2);
+    // BALL-Platform COLLISION
+    public void collisionBallPlatform(){
+        if (RectF.intersects(platform.getRect(), ball.getRect())) {
+            if(ball.isMovingUpWards() == false){
+                ball.setRandomXVelocity();
+                ball.reverseYVelocity();
+                ball.clearObstacleY(platform.getRect().top - 2);
+            }
         }
     }
 
@@ -112,24 +113,24 @@ public class GameRules {
 
     // TODO:COMMENT
     public void checkMaxScore(){
-        if (score >= numBricks * 10){
+        if (score >= numTiles * 10){
             paused = true;
             resetGame();
         }
     }
 
-    // DRAWS BRICKS
-    public void drawBricks(){
-        for (int i = 0; i < numBricks; i++) {
-            if (bricks[i].getVisibility()) {
-                drawOnCanvas(bricks[i].getRect(), paint);
+    // DRAWS TILES
+    public void drawTiles(){
+        for (int i = 0; i < numTiles; i++) {
+            if (tiles[i].getVisibility()) {
+                drawOnCanvas(tiles[i].getRect(), paint);
             }
         }
     }
     // CHECKS IF USER WON OR LOST
     public void checkWinLoss(){
         // Win
-        if (score == numBricks * 10) {
+        if (score == numTiles * 10) {
             setPaintTextSize(90);
             drawTextOnCanvas("YOU HAVE WON!", 10, screenHeightY / 2, paint);
         }
@@ -162,37 +163,38 @@ public class GameRules {
         return ball;
     }
 
-    //PADDLE
-    // TODO: Comment createPaddle
-    public void createPaddle(int x, int y){
-        paddle = new Paddle(x, y);
+    //platform
+    // TODO: Comment createplatform
+    public void createPlatform(int x, int y){
+        platform = new Platform(x, y);
     }
 
-    // updates location of paddle
-    public void updatePaddle(){
-        paddle.update(getFrameRate());
+    // updates location of platform
+    public void updatePlatform(){
+        platform.update(getFrameRate());
     }
 
-    // getter for paddle rectangle
-    // @return returns paddle rectangle from game
-    public RectF getPaddleRect(){
-        return paddle.getRect();
+    // getter for platform rectangle
+    // @return returns platform rectangle from game
+    public RectF getPlatformRect(){
+        return platform.getRect();
     }
 
-    public void Paddle(int direction){
-        paddle.setMovementState(direction);
+    public void Platform(int direction){
+        platform.setMovementState(direction);
     }
 
-    // getter for paddle object
-    // @return returns paddle object
-    public Paddle getPaddle() {
-        return paddle;
+    // getter for platform object
+    // @return returns platform object
+    public Platform getPlatform() {
+        return platform;
     }
 
-    // moves paddle object
-    // @param direction: direction that paddle will move
-    public void movePaddle(int direction){
-        paddle.setMovementState(direction);
+    // moves platform object
+    // @param direction: direction that platform will move
+    public void movePlatform(int direction){
+        //if((direction == platform.LEFT && platform.inBoundsLeft()) || (direction == platform.RIGHT && platform.inBoundsRight(screenWidthX)))
+            platform.setMovementState(direction);
     }
 
     //PAINT
