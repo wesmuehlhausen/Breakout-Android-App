@@ -13,8 +13,11 @@ import android.view.SurfaceView;
 
 public class BreakoutGame extends Activity {
 
+    Context mainActivity;
+
+
     BreakoutView breakoutView;
-    GameRules game = new GameRules();
+    GameRules game = new GameRules(BreakoutGame.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
