@@ -1,5 +1,8 @@
 package com.example.breakbrickerdevolution;
 
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.RectF;
 
 public class Platform {
@@ -25,6 +28,9 @@ public class Platform {
     public final int LEFT = 1;
     public final int RIGHT = 2;
 
+    //TODO
+
+
     // Is the platform moving and in which direction
     private int platformMoving = STOPPED;
 
@@ -44,6 +50,7 @@ public class Platform {
         y = screenY - 100;
 
         rect = new RectF(x, y, x + length, y + height);
+
 
         // How fast is the platform in pixels per second
         platformSpeed = 349;

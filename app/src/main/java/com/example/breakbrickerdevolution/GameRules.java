@@ -3,6 +3,7 @@ package com.example.breakbrickerdevolution;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -126,10 +127,10 @@ public class GameRules {
     }
 
     // DRAWS TILES
-    public void drawTiles(){
+    public void drawTiles(Bitmap bitmap){
         for (int i = 0; i < numTiles; i++) {
             if (tiles[i].getVisibility()) {
-                drawOnCanvas(tiles[i].getRect(), paint);
+                drawOnCanvas(tiles[i].getRect(), paint, bitmap);
             }
         }
     }
@@ -236,8 +237,12 @@ public class GameRules {
     // draws a rectangle onto the canvas
     // @param rect: rectangle object to be drawn
     // @param paint: paint object for rectangle
-    public void drawOnCanvas(RectF rect, Paint paint){
+    public void drawOnCanvas(RectF rect, Paint paint, Bitmap map){
         canvas.drawRect(rect, paint);
+        if(map != null){
+            canvas.drawBitmap(map, null, rect, null);
+        }
+
     }
 
     // draws text onto screen

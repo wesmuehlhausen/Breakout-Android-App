@@ -2,6 +2,8 @@ package com.example.breakbrickerdevolution;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -11,10 +13,16 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BreakoutGame extends Activity {
 
     BreakoutView breakoutView;
     GameRules game = new GameRules();
+    ArrayList<Bitmap> bMaps = new ArrayList<Bitmap>();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +30,8 @@ public class BreakoutGame extends Activity {
         // Initialize gameView and set it as the view
         breakoutView = new BreakoutView(this);
         setContentView(breakoutView);
+        createAssets();
+
     }
 
     class BreakoutView extends SurfaceView implements Runnable {
@@ -48,15 +58,13 @@ public class BreakoutGame extends Activity {
         public void run() {
             while (game.isActive() == true) {
                 long startFrameTime = System.currentTimeMillis();
-                // Update the frame
-                if (game.isPaused() == false)
+                if (game.isPaused() == false)// Update the frame
                     update();
                 draw();
                 game.setFrameTime(System.currentTimeMillis() - startFrameTime);
                 if (game.getFrameTime() >= 1)
                     game.setFrameRate(1000 / game.getFrameTime());
             }
-
         }
 
         public void update() {
@@ -84,13 +92,13 @@ public class BreakoutGame extends Activity {
                 // Choose the brush color for drawing
                 game.setPaintColorARGB(255, 255, 255, 255);
                 // Draw the paddle
-                game.drawOnCanvas(game.getPlatformRect(), game.getPaint());
+                game.drawOnCanvas(game.getPlatformRect(), game.getPaint(), bMaps.get(0));
                 // Draw the ball
-                game.drawOnCanvas(game.getBall().getRect(), game.getPaint());
+                game.drawOnCanvas(game.getBall().getRect(), game.getPaint(), null);
                 // Change the brush color for drawing
                 game.setPaintColorARGB(255, 249, 129, 0);
                 // Draw the tiles if visible
-                game.drawTiles();
+                game.drawTiles(bMaps.get(1));
                 // Choose the brush color for drawing
                 game.setPaintColorARGB(255, 255, 255, 255);
                 // Draw the score
@@ -166,6 +174,14 @@ public class BreakoutGame extends Activity {
 
         // Tell the gameView pause method to execute
         breakoutView.pause();
+    }
+
+    public void createAssets(){
+        //https://jamiecross.itch.io/breakout-brick-breaker-game-tile-set-free
+        bMaps.add(BitmapFactory.decodeResource(getResources(),R.drawable.platform));
+        bMaps.add(BitmapFactory.decodeResource(getResources(),R.drawable.brick));
+        bMaps.add(BitmapFactory.decodeResource(getResources(),R.drawable.ball));
+
     }
 
 }
