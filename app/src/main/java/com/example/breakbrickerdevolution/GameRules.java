@@ -69,6 +69,7 @@ public class GameRules {
         }
     }
 
+    // BALL-PADDLE COLLISION
     public void collisionBallPaddle(){
         if (RectF.intersects(paddle.getRect(), ball.getRect())) {
             ball.setRandomXVelocity();
@@ -77,6 +78,7 @@ public class GameRules {
         }
     }
 
+    // BALL-DEADZONE COLLISION
     public void ballHitsDeadZone(){
         if (ball.getRect().bottom > screenHeightY) {
             ball.reverseYVelocity();
@@ -89,6 +91,7 @@ public class GameRules {
         }
     }
 
+    // BALL-WALL COLLISION
     public void bounceOffLegalWalls(){
         // Ball Hits top
         if (ball.getRect().top < 0) {
@@ -107,6 +110,7 @@ public class GameRules {
         }
     }
 
+    // TODO:COMMENT
     public void checkMaxScore(){
         if (score >= numBricks * 10){
             paused = true;
@@ -114,6 +118,7 @@ public class GameRules {
         }
     }
 
+    // DRAWS BRICKS
     public void drawBricks(){
         for (int i = 0; i < numBricks; i++) {
             if (bricks[i].getVisibility()) {
@@ -121,7 +126,7 @@ public class GameRules {
             }
         }
     }
-
+    // CHECKS IF USER WON OR LOST
     public void checkWinLoss(){
         // Win
         if (score == numBricks * 10) {
@@ -139,27 +144,37 @@ public class GameRules {
     //HELPER METHODS
 
     //BALL
+    // Creates Ball
+    // @param x: x value for size of ball
+    // @param y: y value for size of ball
     public void createBall(int x, int y){
         ball = new Ball(x, y);
     }
 
+    // updates location of ball
     public void updateBall(){
         ball.update(frameRate);
     }
 
+    // getter for ball
+    // @return returns ball object from game
     public Ball getBall(){
         return ball;
     }
 
     //PADDLE
+    // TODO: Comment createPaddle
     public void createPaddle(int x, int y){
         paddle = new Paddle(x, y);
     }
 
+    // updates location of paddle
     public void updatePaddle(){
         paddle.update(getFrameRate());
     }
 
+    // getter for paddle rectangle
+    // @return returns paddle rectangle from game
     public RectF getPaddleRect(){
         return paddle.getRect();
     }
@@ -168,52 +183,79 @@ public class GameRules {
         paddle.setMovementState(direction);
     }
 
+    // getter for paddle object
+    // @return returns paddle object
     public Paddle getPaddle() {
         return paddle;
     }
 
+    // moves paddle object
+    // @param direction: direction that paddle will move
     public void movePaddle(int direction){
         paddle.setMovementState(direction);
     }
 
     //PAINT
+    // initializes paint object
     public void newPaint(){
         paint = new Paint();
     }
+    // sets paint color
+    // TODO: param comments for setPaintColor
     public void setPaintColorARGB(int a, int r, int g, int b){
         paint.setColor(Color.argb(a, r, g, b));
     }
 
+    // setter for the paint text size
+    // @param size: size of text that paints text size is set to
     public void setPaintTextSize(float size){
         paint.setTextSize(size);
     }
 
+    // getter for paint object
+    // @return returns the paint object
     public Paint getPaint(){
         return paint;
     }
 
     //CANVAS
+    // locks canvas for drawing
+    // TODO: param comment for lockCanvas
     public void lockCanvas(SurfaceHolder holder){
         canvas = holder.lockCanvas();
     }
 
+    // draws a rectangle onto the canvas
+    // @param rect: rectangle object to be drawn
+    // @param paint: paint object for rectangle
     public void drawOnCanvas(RectF rect, Paint paint){
         canvas.drawRect(rect, paint);
     }
 
+    // draws text onto screen
+    // @param text: string value of text to be drawn
+    // @param x: x value for start of text
+    // @param y: y value for start of text
+    // @param paint: paint object for drawing text
     public void drawTextOnCanvas(String text, int x, int y, Paint paint){
         canvas.drawText(text, x, y, paint);
     }
 
+    // getter for the canvas object
+    // @return returns the canvas object
     public Canvas getCanvas() {
         return canvas;
     }
 
     //PAUSED: for within the activity
+    // true if game is paused and false otherwise
+    // @return returns true or false based on paused state
     public boolean isPaused() {
         return paused;
     }
 
+    // setter for paused variable
+    // @param paused: what paused variable is set to
     public void setPaused(boolean paused) {
         this.paused = paused;
     }
