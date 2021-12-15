@@ -10,13 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BreakBrickerDevolution">
         <activity
-            android:name=".BreakoutGame"
+            android:name=".StartActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".BreakoutGame"
+            android:exported="true">
         </activity>
     </application>
 
