@@ -18,11 +18,10 @@ import java.util.List;
 
 public class BreakoutGame extends Activity {
 
+    Context mainActivity;
     BreakoutView breakoutView;
-    GameRules game = new GameRules();
     ArrayList<Bitmap> bMaps = new ArrayList<Bitmap>();
-
-
+    GameRules game = new GameRules(BreakoutGame.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

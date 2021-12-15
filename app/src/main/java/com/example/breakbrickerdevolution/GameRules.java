@@ -11,6 +11,7 @@ import android.graphics.Point;
 import android.graphics.RectF;
 import android.view.SurfaceHolder;
 
+
 public class GameRules {
 
     //STATIC FIELDS
@@ -37,19 +38,21 @@ public class GameRules {
     private int tileRows = 9;
     private int score = 0;
 
+    private Context context;
+
+    public GameRules(Context context) {
+        this.context = context;
+    }
+
     ////////////////////////////////////////////////////////////////
     //MAIN GAME METHODS
 
     //RESET GAME
-    public void resetGame(){
+    public void resetGame() {
         ball.reset(screenWidthX, screenHeightY);
         numTiles = 0;
         //Check the lives and reset
         if(lives == 0){
-            Context context;
-            //context.getApplicationContext();
-            //SharedPreferences hScore = getSharedPreferences("YOUR_PREF_NAME", 0);
-            //int highScore = hScore.getInt("SNOW_DENSITY", 0);
             lives = 5;
             score = 0;
         }
