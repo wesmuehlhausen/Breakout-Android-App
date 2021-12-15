@@ -2,22 +2,20 @@ package com.example.breakbrickerdevolution;
 
 import android.graphics.RectF;
 
-public class Brick {
+public class Tile {
 
     private RectF rect;
-
     private boolean isVisible;
 
-    public Brick(int row, int column, int width, int height){
+    public Tile(int row, int column, int width, int height){
 
         isVisible = true;
 
-        int padding = 1;
-
-        rect = new RectF(column * width + padding,
-                row * height + padding,
-                column * width + width - padding,
-                row * height + height - padding);
+        int indent = 1;
+        rect = new RectF(column * width + indent,
+                row * height + indent,
+                column * width + width - indent,
+                row * height + height - indent);
     }
 
     public RectF getRect(){

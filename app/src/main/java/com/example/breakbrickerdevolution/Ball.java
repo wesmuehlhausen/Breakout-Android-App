@@ -10,6 +10,7 @@ public class Ball {
     float yVelocity;
     float ballWidth = 10;
     float ballHeight = 10;
+    double speedVariable = 2;
 
     public Ball(int screenX, int screenY){
 
@@ -28,10 +29,18 @@ public class Ball {
     }
 
     public void update(long fps){
+        fps *= speedVariable;
         rect.left = rect.left + (xVelocity / fps);
         rect.top = rect.top + (yVelocity / fps);
         rect.right = rect.left + ballWidth;
         rect.bottom = rect.top - ballHeight;
+    }
+
+    public boolean isMovingUpWards(){
+        if(yVelocity < 0)
+            return true;
+        else
+            return false;
     }
 
     public void reverseYVelocity(){

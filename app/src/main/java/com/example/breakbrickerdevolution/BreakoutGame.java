@@ -39,7 +39,7 @@ public class BreakoutGame extends Activity {
             display.getSize(size);
             game.setScreenWidthX(size.x);
             game.setScreenHeightY(size.y);
-            game.createPaddle(game.getScreenWidthX(), game.getScreenHeightY());
+            game.createPlatform(game.getScreenWidthX(), game.getScreenHeightY());
             game.createBall(game.getScreenWidthX(), game.getScreenHeightY());
             game.resetGame();
         }
@@ -61,12 +61,12 @@ public class BreakoutGame extends Activity {
 
         public void update() {
             // Move the paddle if required
-            game.updatePaddle();
+            game.updatePlatform();
             game.updateBall();
 
-            // Check for ball colliding with a brick
-            game.collisionBallBrick();
-            game.collisionBallPaddle();
+            // Check for ball colliding with a tile
+            game.collisionBallTile();
+            game.collisionBallPlatform();
             game.ballHitsDeadZone();
             game.bounceOffLegalWalls();
             game.checkMaxScore();
@@ -84,13 +84,13 @@ public class BreakoutGame extends Activity {
                 // Choose the brush color for drawing
                 game.setPaintColorARGB(255, 255, 255, 255);
                 // Draw the paddle
-                game.drawOnCanvas(game.getPaddleRect(), game.getPaint());
+                game.drawOnCanvas(game.getPlatformRect(), game.getPaint());
                 // Draw the ball
                 game.drawOnCanvas(game.getBall().getRect(), game.getPaint());
                 // Change the brush color for drawing
                 game.setPaintColorARGB(255, 249, 129, 0);
-                // Draw the bricks if visible
-                game.drawBricks();
+                // Draw the tiles if visible
+                game.drawTiles();
                 // Choose the brush color for drawing
                 game.setPaintColorARGB(255, 255, 255, 255);
                 // Draw the score
@@ -135,25 +135,18 @@ public class BreakoutGame extends Activity {
                 // Player has touched the screen
                 case MotionEvent.ACTION_DOWN:
                     game.setPaused(false);
-                    if (motionEvent.getX() > game.getScreenWidthX() / 2) {
-                        game.movePaddle(game.getPaddle().RIGHT);
-                    }
+                    if (motionEvent.getX() > game.getScreenWidthX() / 2)
+                        game.movePlatform(game.getPlatform().RIGHT);
                     else
-                    {
-                        game.movePaddle(game.getPaddle().LEFT);
-                    }
-
+                        game.movePlatform(game.getPlatform().LEFT);
                     break;
-
                 // Player has removed finger from screen
                 case MotionEvent.ACTION_UP:
-                    game.movePaddle(game.getPaddle().STOPPED);
+                    game.movePlatform(game.getPlatform().STOPPED);
                     break;
             }
-
             return true;
         }
-
     }
     // This is the end of our BreakoutView inner class
 
